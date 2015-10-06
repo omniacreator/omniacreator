@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SerialInterface</class>
+ <widget class="QDockWidget" name="SerialInterface">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>375</height>
+   </rect>
+  </property>
+  <widget class="QMainWindow" name="mainWindow">
+   <property name="dockNestingEnabled">
+    <bool>true</bool>
+   </property>
+   <widget class="QScrollArea" name="centralWidget">
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QMenuBar" name="menuBar">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>500</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <widget class="QMenu" name="menuFile">
+     <property name="title">
+      <string>File</string>
+     </property>
+     <addaction name="actionClose_Window"/>
+    </widget>
+    <widget class="QMenu" name="menuHelp">
+     <property name="title">
+      <string>Help</string>
+     </property>
+     <addaction name="actionGeneral_Help"/>
+     <addaction name="actionInterface_Help"/>
+    </widget>
+    <addaction name="menuFile"/>
+    <addaction name="menuHelp"/>
+   </widget>
+   <widget class="QStatusBar" name="statusBar"/>
+  </widget>
+  <action name="actionClose_Window">
+   <property name="text">
+    <string>Close Window</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionGeneral_Help">
+   <property name="text">
+    <string>General Help</string>
+   </property>
+  </action>
+  <action name="actionInterface_Help">
+   <property name="text">
+    <string>Interface Help</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

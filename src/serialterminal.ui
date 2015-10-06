@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SerialTerminal</class>
+ <widget class="QDockWidget" name="SerialTerminal">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>375</height>
+   </rect>
+  </property>
+  <widget class="QMainWindow" name="mainWindow">
+   <property name="dockNestingEnabled">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="centralWidget">
+    <layout class="QGridLayout" name="gridLayout">
+     <property name="leftMargin">
+      <number>2</number>
+     </property>
+     <property name="topMargin">
+      <number>2</number>
+     </property>
+     <property name="rightMargin">
+      <number>2</number>
+     </property>
+     <property name="bottomMargin">
+      <number>2</number>
+     </property>
+     <property name="spacing">
+      <number>2</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLineEdit" name="tx">
+       <property name="font">
+        <font>
+         <family>Courier</family>
+        </font>
+       </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
+       <property name="clearButtonEnabled">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPlainTextEdit" name="rx">
+       <property name="font">
+        <font>
+         <family>Courier</family>
+        </font>
+       </property>
+       <property name="tabChangesFocus">
+        <bool>true</bool>
+       </property>
+       <property name="undoRedoEnabled">
+        <bool>false</bool>
+       </property>
+       <property name="lineWrapMode">
+        <enum>QPlainTextEdit::NoWrap</enum>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QMenuBar" name="menuBar">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>500</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <widget class="QMenu" name="menuFile">
+     <property name="title">
+      <string>File</string>
+     </property>
+     <addaction name="actionClear_Screen"/>
+     <addaction name="separator"/>
+     <addaction name="actionSend_Text_File"/>
+     <addaction name="actionSave_Text_File"/>
+     <addaction name="separator"/>
+     <addaction name="actionClose_Window"/>
+    </widget>
+    <widget class="QMenu" name="menuHelp">
+     <property name="title">
+      <string>Help</string>
+     </property>
+     <addaction name="actionGeneral_Help"/>
+     <addaction name="actionTerminal_Help"/>
+    </widget>
+    <addaction name="menuFile"/>
+    <addaction name="menuHelp"/>
+   </widget>
+   <widget class="QStatusBar" name="statusBar"/>
+  </widget>
+  <action name="actionClear_Screen">
+   <property name="text">
+    <string>Clear Screen</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionSend_Text_File">
+   <property name="text">
+    <string>Send Text File</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionSave_Text_File">
+   <property name="text">
+    <string>Save Text File</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionClose_Window">
+   <property name="text">
+    <string>Close Window</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionGeneral_Help">
+   <property name="text">
+    <string>General Help</string>
+   </property>
+  </action>
+  <action name="actionTerminal_Help">
+   <property name="text">
+    <string>Terminal Help</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

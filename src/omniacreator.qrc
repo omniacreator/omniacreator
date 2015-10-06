@@ -1,0 +1,13 @@
+<RCC>
+<qresource>
+
+<file>../../../../../icons/internal/icon/icon.png</file>
+<file>../../../../../icons/internal/about/about600x300.png</file>
+
+<file>../../../../../icons/internal/circles/red/red24x24.png</file>
+<file>../../../../../icons/internal/circles/green/green24x24.png</file>
+
+<file>../../../../../icons/external/cmake/cmake.png</file>
+
+</qresource>
+</RCC>

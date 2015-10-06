@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SerialTable</class>
+ <widget class="QDockWidget" name="SerialTable">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>375</height>
+   </rect>
+  </property>
+  <widget class="QMainWindow" name="mainWindow">
+   <property name="dockNestingEnabled">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="centralWidget">
+    <layout class="QGridLayout" name="gridLayout">
+     <property name="leftMargin">
+      <number>2</number>
+     </property>
+     <property name="topMargin">
+      <number>2</number>
+     </property>
+     <property name="rightMargin">
+      <number>2</number>
+     </property>
+     <property name="bottomMargin">
+      <number>2</number>
+     </property>
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QTableWidget" name="tableWidget">
+       <property name="alternatingRowColors">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QMenuBar" name="menuBar">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>500</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <widget class="QMenu" name="menuFile">
+     <property name="title">
+      <string>File</string>
+     </property>
+     <addaction name="actionFind_Item"/>
+     <addaction name="separator"/>
+     <addaction name="actionOpen_Table"/>
+     <addaction name="actionSave_Table"/>
+     <addaction name="actionExport_CSV"/>
+     <addaction name="separator"/>
+     <addaction name="actionClose_Window"/>
+    </widget>
+    <widget class="QMenu" name="menuHelp">
+     <property name="title">
+      <string>Help</string>
+     </property>
+     <addaction name="actionGeneral_Help"/>
+     <addaction name="actionTable_Help"/>
+    </widget>
+    <addaction name="menuFile"/>
+    <addaction name="menuHelp"/>
+   </widget>
+   <widget class="QStatusBar" name="statusBar"/>
+  </widget>
+  <action name="actionFind_Item">
+   <property name="text">
+    <string>Find Item</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionOpen_Table">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Open Table</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
+  </action>
+  <action name="actionSave_Table">
+   <property name="text">
+    <string>Save Table</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionExport_CSV">
+   <property name="text">
+    <string>Export CSV</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionClose_Window">
+   <property name="text">
+    <string>Close Window</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionGeneral_Help">
+   <property name="text">
+    <string>General Help</string>
+   </property>
+  </action>
+  <action name="actionTable_Help">
+   <property name="text">
+    <string>Table Help</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
