@@ -237,6 +237,30 @@ void exportSPINInterfaceLibrary(QWidget *parent)
         QFile::copy(":interfacelibrary/ilterminal.spin",
         QDir::fromNativeSeparators(QDir::cleanPath(string +
         QDir::separator() + "ilterminal.spin")));
+
+        QFile::copy(":interfacelibrary/examples/Serial Core Demo.spin",
+        QDir::fromNativeSeparators(QDir::cleanPath(string +
+        QDir::separator() + "Serial Core Demo.spin")));
+
+        QFile::copy(":interfacelibrary/examples/Plot Bar Demo.spin",
+        QDir::fromNativeSeparators(QDir::cleanPath(string +
+        QDir::separator() + "Plot Bar Demo.spin")));
+
+        QFile::copy(":interfacelibrary/examples/Plot Box Demo.spin",
+        QDir::fromNativeSeparators(QDir::cleanPath(string +
+        QDir::separator() + "Plot Box Demo.spin")));
+
+        QFile::copy(":interfacelibrary/examples/Plot Curve Demo.spin",
+        QDir::fromNativeSeparators(QDir::cleanPath(string +
+        QDir::separator() + "Plot Curve Demo.spin")));
+
+        QFile::copy(":interfacelibrary/examples/Plot Graph Demo.spin",
+        QDir::fromNativeSeparators(QDir::cleanPath(string +
+        QDir::separator() + "Plot Graph Demo.spin")));
+
+        QFile::copy(":interfacelibrary/examples/Serial Terminal Demo.spin",
+        QDir::fromNativeSeparators(QDir::cleanPath(string +
+        QDir::separator() + "Serial Terminal Demo.spin")));
     }
 }
 

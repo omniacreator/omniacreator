@@ -11,5 +11,11 @@
         <file>interfacelibrary/iloscilloscopecurve.spin</file>
         <file>interfacelibrary/iloscilloscopegraph.spin</file>
         <file>interfacelibrary/ilterminal.spin</file>
+        <file>interfacelibrary/examples/Serial Core Demo.spin</file>
+        <file>interfacelibrary/examples/Plot Bar Demo.spin</file>
+        <file>interfacelibrary/examples/Plot Box Demo.spin</file>
+        <file>interfacelibrary/examples/Plot Curve Demo.spin</file>
+        <file>interfacelibrary/examples/Plot Graph Demo.spin</file>
+        <file>interfacelibrary/examples/Serial Terminal Demo.spin</file>
     </qresource>
 </RCC>
