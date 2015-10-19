@@ -67,7 +67,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description = "Preprocess Script")
 
-    parser.add_argument("-I", "--include", nargs = '?', default = '.',
+    parser.add_argument("-I", "--include", nargs = '?', default = __folder__,
                         action = "append")
 
     parser.add_argument("input_file")
@@ -81,7 +81,7 @@ if __name__ == "__main__":
     # Preprocess ##############################################################
 
     with open(args.output_file, 'w') as file:
-        for line in preprocess_file(args.input_file, args.include):
+        for line in preprocess_file(args.input_file, [args.include]):
             file.write(line)
 
     # Format ##################################################################

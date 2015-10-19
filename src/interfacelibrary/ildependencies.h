@@ -149,7 +149,7 @@
     #define INPUT 0
 
 #else
-    #include "serialdevice.h"
+    #include <QtGlobal>
 #endif
 
 #define TIME_DELAY_PAUSE 10 // 10 ms
@@ -405,7 +405,7 @@ static void serialResetEvent()
     }
     #else
     {
-        SerialDevice::resetEventExtern();
+
     }
     #endif
 }
@@ -435,7 +435,7 @@ inline int serialAvailable()
     }
     #else
     {
-        return SerialDevice::bytesAvailableExtern();
+        return int();
     }
     #endif
 }
@@ -459,7 +459,7 @@ inline int serialRead()
     }
     #else
     {
-        char data; SerialDevice::readDataExtern(&data); return data;
+        return char();
     }
     #endif
 }
@@ -483,7 +483,7 @@ inline void serialWrite(char data)
     }
     #else
     {
-        SerialDevice::writeDataExtern(&data);
+        Q_UNUSED(data);
     }
     #endif
 }
@@ -509,7 +509,7 @@ inline void serialWrite(const char *data, uint32 size)
     }
     #else
     {
-        SerialDevice::writeDataExtern(data, size);
+        Q_UNUSED(data); Q_UNUSED(size);
     }
     #endif
 }
@@ -545,7 +545,7 @@ inline uint32 timeMilliseconds()
     }
     #else
     {
-        return SerialDevice::millisecondsExtern();
+        return uint32();
     }
     #endif
 }
@@ -581,7 +581,7 @@ inline void timeDelayMilliseconds(uint32 milliseconds)
     }
     #else
     {
-        SerialDevice::waitMillisecondsExtern(milliseconds);
+        Q_UNUSED(milliseconds);
     }
     #endif
 }

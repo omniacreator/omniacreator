@@ -1,13 +1,15 @@
 <RCC>
-<qresource>
-
-<file>../../../../../icons/internal/icon/icon.png</file>
-<file>../../../../../icons/internal/about/about600x300.png</file>
-
-<file>../../../../../icons/internal/circles/red/red24x24.png</file>
-<file>../../../../../icons/internal/circles/green/green24x24.png</file>
-
-<file>../../../../../icons/external/cmake/cmake.png</file>
-
-</qresource>
+    <qresource prefix="/">
+        <file>media/icons/omniacreator-icon/omniacreator.png</file>
+        <file>media/splash/omniacreator-splash/splash-small.png</file>
+        <file>../build/InterfaceLibrary.h</file>
+        <file>interfacelibrary/ilfullduplexserialdriver.spin</file>
+        <file>interfacelibrary/ilcore.spin</file>
+        <file>interfacelibrary/iloscilloscope.spin</file>
+        <file>interfacelibrary/iloscilloscopebar.spin</file>
+        <file>interfacelibrary/iloscilloscopebox.spin</file>
+        <file>interfacelibrary/iloscilloscopecurve.spin</file>
+        <file>interfacelibrary/iloscilloscopegraph.spin</file>
+        <file>interfacelibrary/ilterminal.spin</file>
+    </qresource>
 </RCC>
