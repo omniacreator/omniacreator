@@ -353,8 +353,8 @@ fftw_plan SerialOscilloscope::initFftwHelper(int size)
         double *in = q_check_ptr(fftw_alloc_real(inSize));
         fftw_complex *out = q_check_ptr(fftw_alloc_complex(outSize));
 
-        qMemSet(in, 0, sizeof(double) * inSize);
-        qMemSet(out, 0, sizeof(fftw_complex) * outSize);
+        memset(in, 0, sizeof(double) * inSize);
+        memset(out, 0, sizeof(fftw_complex) * outSize);
 
         m_fftw_lock.lock();
         plan = fftw_plan_dft_r2c_1d(size, in, out,
@@ -380,8 +380,8 @@ fftw_plan SerialOscilloscope::initFftwHelperF(int size)
         fftw_complex *in = q_check_ptr(fftw_alloc_complex(inSize));
         fftw_complex *out = q_check_ptr(fftw_alloc_complex(outSize));
 
-        qMemSet(in, 0, sizeof(fftw_complex) * inSize);
-        qMemSet(out, 0, sizeof(fftw_complex) * outSize);
+        memset(in, 0, sizeof(fftw_complex) * inSize);
+        memset(out, 0, sizeof(fftw_complex) * outSize);
 
         m_fftw_lock.lock();
         plan = fftw_plan_dft_1d(size, in, out, FFTW_FORWARD,
@@ -407,8 +407,8 @@ fftw_plan SerialOscilloscope::initFftwHelperB(int size)
         fftw_complex *in = q_check_ptr(fftw_alloc_complex(inSize));
         fftw_complex *out = q_check_ptr(fftw_alloc_complex(outSize));
 
-        qMemSet(in, 0, sizeof(fftw_complex) * inSize);
-        qMemSet(out, 0, sizeof(fftw_complex) * outSize);
+        memset(in, 0, sizeof(fftw_complex) * inSize);
+        memset(out, 0, sizeof(fftw_complex) * outSize);
 
         m_fftw_lock.lock();
         plan = fftw_plan_dft_1d(size, in, out, FFTW_BACKWARD,
@@ -8744,8 +8744,8 @@ void SerialOscilloscope::calculateCurveFFT(MyCurve *curve)
     fftw_complex *in = q_check_ptr(fftw_alloc_complex(inSize));
     fftw_complex *out = q_check_ptr(fftw_alloc_complex(outSize));
 
-    qMemSet(in, 0, sizeof(fftw_complex) * inSize);
-    qMemSet(out, 0, sizeof(fftw_complex) * outSize);
+    memset(in, 0, sizeof(fftw_complex) * inSize);
+    memset(out, 0, sizeof(fftw_complex) * outSize);
 
     QCPCurveDataMap::const_iterator i = curve->data()->begin();
     QCPCurveDataMap::const_iterator j = curve->data()->end();
@@ -8879,14 +8879,14 @@ void SerialOscilloscope::calculateGraphFFT(MyGraph *graph)
     double *inP = q_check_ptr(fftw_alloc_real(inSize));
     fftw_complex *outP = q_check_ptr(fftw_alloc_complex(outSize));
 
-    qMemSet(in, 0, sizeof(double) * inSize);
-    qMemSet(out, 0, sizeof(fftw_complex) * outSize);
+    memset(in, 0, sizeof(double) * inSize);
+    memset(out, 0, sizeof(fftw_complex) * outSize);
 
-    qMemSet(inM, 0, sizeof(double) * inSize);
-    qMemSet(outM, 0, sizeof(fftw_complex) * outSize);
+    memset(inM, 0, sizeof(double) * inSize);
+    memset(outM, 0, sizeof(fftw_complex) * outSize);
 
-    qMemSet(inP, 0, sizeof(double) * inSize);
-    qMemSet(outP, 0, sizeof(fftw_complex) * outSize);
+    memset(inP, 0, sizeof(double) * inSize);
+    memset(outP, 0, sizeof(fftw_complex) * outSize);
 
     QCPDataMap::const_iterator i = graph->data()->begin();
     QCPDataMap::const_iterator j = graph->data()->end();

@@ -32,10 +32,9 @@
 #include <QtCore>
 #include <QtGui>
 #include <QtWidgets>
+#include <QSerialPort>
 
-#include "serialport.h"
-#include "projectdefines.h"
-
+#include "main.h"
 #include "serialwindow.h"
 #include "serialterminal.h"
 #include "serialoscilloscope.h"
@@ -49,6 +48,60 @@
 
 #define DEGLITCH_WAIT 10 // 10 ms
 
+class QSerialPortSignalMapper : public QObject
+{
+    Q_OBJECT
+
+public:
+
+    explicit QSerialPortSignalMapper(QObject *parent) : QObject(parent)
+    {
+        // UNUSED //
+    }
+
+    virtual ~QSerialPortSignalMapper()
+    {
+        // UNUSED //
+    }
+
+    void setSenderObject(const QObject *sender)
+    {
+        m_sender = sender;
+    }
+
+    const QObject *getSenderObject() const
+    {
+        return m_sender;
+    }
+
+    QMetaObject::Connection connectSender(const QObject *sender,
+                                          const char *signal,
+                                          const char *method)
+    {
+        return connect(m_sender = sender, signal, method);
+    }
+
+public slots:
+
+    void map(QSerialPort::SerialPortError error)
+    {
+        if(error == QSerialPort::BreakConditionError)
+        {
+            emit mapped();
+        }
+    }
+
+signals:
+
+    void mapped();
+
+private:
+
+    Q_DISABLE_COPY(QSerialPortSignalMapper)
+
+    QPointer<const QObject> m_sender;
+};
+
 class SerialEscape : public QObject
 {
     Q_OBJECT
@@ -57,6 +110,47 @@ public:
 
     static int transferTimeHint(int baudRate);
     static int transferSizeHint(int baudRate);
+
+    static bool clearAll(QIODevice *port);
+    static bool flushAll(QIODevice *port);
+
+    static void connectResetEvent(QIODevice *port,
+                                  QObject *receiver,
+                                  const char *slot);
+
+    static void disconnectResetEvent(QIODevice *port,
+                                     QObject *receiver,
+                                     const char *slot);
+
+    static void connectResetEvent2(QIODevice *port,
+                                   QObject *receiver,
+                                   const char *slot);
+
+    static void disconnectResetEvent2(QIODevice *port,
+                                      QObject *receiver,
+                                      const char *slot);
+
+    static bool setBaudRate(QIODevice *port,
+                            int baudRate);
+
+    static int getBaudRate(QIODevice *port);
+
+    static bool setLatencyTimer(QIODevice *port,
+                                int latencyTimer);
+
+    static int getLatencyTimer(QIODevice *port);
+
+    static bool setTransferTime(QIODevice *port,
+                                int readTime,
+                                int writeTime);
+
+    static QPair<int, int> getTransferTime(QIODevice *port);
+
+    static bool setTransferSize(QIODevice *port,
+                                int readSize,
+                                int writeSize);
+
+    static QPair<int, int> getTransferSize(QIODevice *port);
 
     explicit SerialEscape(QIODevice *port = NULL,
                           QWidget *widget = NULL,
@@ -88,7 +182,7 @@ public:
 
 public slots:
 
-    void openJSON(const QString &file = QString());
+    QList<SerialWindow *> openJSON(const QStringList &files = QStringList());
 
     void removeWidget(QAction *action = NULL);
     void removeAllWidgets(QAction *action = NULL);

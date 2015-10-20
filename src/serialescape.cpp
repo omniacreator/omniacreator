@@ -46,6 +46,152 @@ int SerialEscape::transferSizeHint(int baudRate)
     return (qCeil(transfersPerUpdate) * 64.0);
 }
 
+bool SerialEscape::clearAll(QIODevice *port)
+{
+    if(qobject_cast<QSerialPort *>(port))
+    {
+        return static_cast<QSerialPort *>(port)->clear();
+    }
+
+    return port;
+}
+
+bool SerialEscape::flushAll(QIODevice *port)
+{
+    if(qobject_cast<QSerialPort *>(port))
+    {
+        return static_cast<QSerialPort *>(port)->flush();
+    }
+
+    return port;
+}
+
+void SerialEscape::connectResetEvent(QIODevice *port,
+                                     QObject *receiver,
+                                     const char *slot)
+{
+    if(receiver && slot)
+    {
+        if(qobject_cast<QSerialPort *>(port))
+        {
+            QSerialPortSignalMapper *mapper =
+            new QSerialPortSignalMapper(receiver);
+
+            mapper->connectSender(static_cast<QSerialPort *>(port),
+            SIGNAL(error(QSerialPort::SerialPortError)),
+            SLOT(map(QSerialPort::SerialPortError)));
+
+            connect(mapper, SIGNAL(mapped()), receiver, slot);
+            connect(port, SIGNAL(destroyed()), mapper, SLOT(deleteLater()));
+        }
+    }
+}
+
+void SerialEscape::disconnectResetEvent(QIODevice *port,
+                                        QObject *receiver,
+                                        const char *slot)
+{
+    if(receiver && slot)
+    {
+        if(qobject_cast<QSerialPort *>(port))
+        {
+            QList<QSerialPortSignalMapper *> list =
+            receiver->findChildren<QSerialPortSignalMapper *>();
+
+            foreach(QSerialPortSignalMapper *mapper, list)
+            {
+                if(mapper->getSenderObject() == port)
+                {
+                    delete mapper;
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void SerialEscape::connectResetEvent2(QIODevice *port,
+                                      QObject *parent,
+                                      const char *slot)
+{
+    Q_UNUSED(port); Q_UNUSED(parent); Q_UNUSED(slot);
+}
+
+void SerialEscape::disconnectResetEvent2(QIODevice *port,
+                                         QObject *parent,
+                                         const char *slot)
+{
+    Q_UNUSED(port); Q_UNUSED(parent); Q_UNUSED(slot);
+}
+
+bool SerialEscape::setBaudRate(QIODevice *port,
+                               int baudRate)
+{
+    if(qobject_cast<QSerialPort *>(port))
+    {
+        return static_cast<QSerialPort *>(port)->setBaudRate(baudRate);
+    }
+
+    return port;
+}
+
+int SerialEscape::getBaudRate(QIODevice *port)
+{
+    if(qobject_cast<QSerialPort *>(port))
+    {
+        return static_cast<QSerialPort *>(port)->baudRate();
+    }
+
+    return int();
+}
+
+bool SerialEscape::setLatencyTimer(QIODevice *port,
+                                   int latencyTimer)
+{
+    Q_UNUSED(latencyTimer);
+
+    return port;
+}
+
+int SerialEscape::getLatencyTimer(QIODevice *port)
+{
+    Q_UNUSED(port);
+
+    return int();
+}
+
+bool SerialEscape::setTransferTime(QIODevice *port,
+                                   int readTime,
+                                   int writeTime)
+{
+    Q_UNUSED(readTime); Q_UNUSED(writeTime);
+
+    return port;
+}
+
+QPair<int, int> SerialEscape::getTransferTime(QIODevice *port)
+{
+    Q_UNUSED(port);
+
+    return QPair<int, int>(int(), int());
+}
+
+bool SerialEscape::setTransferSize(QIODevice *port,
+                                   int readSize,
+                                   int writeSize)
+{
+    Q_UNUSED(readSize); Q_UNUSED(writeSize);
+
+    return port;
+}
+
+QPair<int, int> SerialEscape::getTransferSize(QIODevice *port)
+{
+    Q_UNUSED(port);
+
+    return QPair<int, int>(int(), int());
+}
+
 SerialEscape::SerialEscape(QIODevice *port, QWidget *widget,
 QSettings *settings, QObject *parent) : QObject(parent)
 {
@@ -85,7 +231,7 @@ QSettings *settings, QObject *parent) : QObject(parent)
 
     m_terminal = new SerialTerminal(tr("Serial Terminal"), m_settings);
     m_terminal->setAttribute(Qt::WA_DeleteOnClose, false);
-    m_terminal->setAttribute(Qt::WA_QuitOnClose, false);
+    m_terminal->setAttribute(Qt::WA_QuitOnClose, true);
     m_terminal->setWindowHandle(m_terminal->getWindowHandle());
 
     connect(m_terminal, SIGNAL(transmit(QByteArray,QWidget*)),
@@ -94,7 +240,7 @@ QSettings *settings, QObject *parent) : QObject(parent)
     connect(m_terminal, SIGNAL(errorMessage(QString)),
             this, SIGNAL(errorMessage(QString)));
 
-    m_terminal->hide(); dockWindow(m_widget, m_terminal);
+    m_terminal->hide(); // dockWindow(m_widget, m_terminal);
 
     m_windows = QMap<int, SerialWindow *>();
 
@@ -105,10 +251,10 @@ QSettings *settings, QObject *parent) : QObject(parent)
         connect(m_port, SIGNAL(aboutToClose()),
                 this, SLOT(userReset()));
 
-        SerialPort::connectResetEvent(m_port,
+        connectResetEvent(m_port,
                 this, SLOT(resetEvent()));
 
-        SerialPort::connectResetEvent2(m_port,
+        connectResetEvent2(m_port,
                 this, SLOT(resetEvent2()));
 
         connect(m_port, SIGNAL(readyRead()),
@@ -176,10 +322,10 @@ void SerialEscape::setPort(QIODevice *port)
         disconnect(m_port, SIGNAL(aboutToClose()),
                    this, SLOT(userReset()));
 
-        SerialPort::disconnectResetEvent(m_port,
+        disconnectResetEvent(m_port,
                    this, SLOT(resetEvent()));
 
-        SerialPort::disconnectResetEvent2(m_port,
+        disconnectResetEvent2(m_port,
                    this, SLOT(resetEvent2()));
 
         disconnect(m_port, SIGNAL(readyRead()),
@@ -193,10 +339,10 @@ void SerialEscape::setPort(QIODevice *port)
         connect(m_port, SIGNAL(aboutToClose()),
                 this, SLOT(userReset()));
 
-        SerialPort::connectResetEvent(m_port,
+        connectResetEvent(m_port,
                 this, SLOT(resetEvent()));
 
-        SerialPort::connectResetEvent2(m_port,
+        connectResetEvent2(m_port,
                 this, SLOT(resetEvent2()));
 
         connect(m_port, SIGNAL(readyRead()),
@@ -283,8 +429,11 @@ bool SerialEscape::getOpenUrlEnabled() const
     return m_openUrlEn;
 }
 
-void SerialEscape::openJSON(const QString &file)
+QList<SerialWindow *> SerialEscape::openJSON(const QStringList &files)
 {
+    QList<SerialWindow *> returnList;
+    QStringList fileList;
+
     QSettings settings(m_settings ? m_settings->fileName() : QString(),
     m_settings ? m_settings->format() : QSettings::Format());
 
@@ -293,81 +442,94 @@ void SerialEscape::openJSON(const QString &file)
     QString openFile = settings.value(SERIAL_ESCAPE_JSON_KEY_FILE,
                                       QDir::homePath()).toString();
 
-    QString temp = file.isEmpty() ? QFileDialog::getOpenFileName(m_widget,
-    tr("Import Widget State"), openFile, tr("JSON Files (*.json)")) : file;
+    QStringList sl = files.isEmpty() ? QFileDialog::getOpenFileNames(m_widget,
+    tr("Import Widget State"), openFile, tr("JSON Files (*.json)")) : files;
 
-    if(!temp.isEmpty())
+    if(!sl.isEmpty())
     {
-        QFile file(temp);
-
-        if(file.open(QIODevice::ReadOnly | QIODevice::Text))
+        foreach(const QString &temp, sl)
         {
-            QJsonParseError parseError; QJsonDocument json =
-            QJsonDocument::fromJson(file.readAll(), &parseError);
-
-            if(parseError.error == QJsonParseError::NoError)
+            if(!temp.isEmpty())
             {
-                QJsonObject object = json.object();
+                QFile file(temp);
 
-                SerialWindow *window = NULL;
+                if(file.open(QIODevice::ReadOnly | QIODevice::Text))
+                {
+                    QJsonParseError parseError; QJsonDocument json =
+                    QJsonDocument::fromJson(file.readAll(), &parseError);
 
-                if(object.value("type").toString() == "oscilloscope")
-                {
-                    window = new SerialOscilloscope(
-                    object.value("title").toString(),
-                    m_settings);
-                }
-                else if(object.value("type").toString() == "table")
-                {
-                    window = new SerialTable(
-                    object.value("title").toString(),
-                    m_settings);
-                }
-                else if(object.value("type").toString() == "tree")
-                {
-                    window = new SerialTree(
-                    object.value("title").toString(),
-                    m_settings);
-                }
-                else if(object.value("type").toString() == "graphics")
-                {
-                    window = new SerialGraphics(
-                    object.value("title").toString(),
-                    m_settings);
-                }
+                    if(parseError.error == QJsonParseError::NoError)
+                    {
+                        QJsonObject object = json.object();
 
-                if(window)
-                {
-                    window->setAttribute(Qt::WA_QuitOnClose, false);
-                    window->importState(temp);
-                    window->show();
+                        SerialWindow *window = NULL;
 
-                    QFileInfo fileInfo(temp);
+                        if(object.value("type").toString() == "oscilloscope")
+                        {
+                            window = new SerialOscilloscope(
+                            object.value("title").toString(),
+                            m_settings);
+                        }
+                        else if(object.value("type").toString() == "table")
+                        {
+                            window = new SerialTable(
+                            object.value("title").toString(),
+                            m_settings);
+                        }
+                        else if(object.value("type").toString() == "tree")
+                        {
+                            window = new SerialTree(
+                            object.value("title").toString(),
+                            m_settings);
+                        }
+                        else if(object.value("type").toString() == "graphics")
+                        {
+                            window = new SerialGraphics(
+                            object.value("title").toString(),
+                            m_settings);
+                        }
 
-                    settings.setValue(SERIAL_ESCAPE_JSON_KEY_FILE,
-                    fileInfo.canonicalFilePath());
+                        if(window)
+                        {
+                            window->setAttribute(Qt::WA_QuitOnClose, true);
+                            window->importState(temp);
+                            window->show();
+
+                            returnList.append(window);
+                            fileList.append(temp);
+                        }
+                        else
+                        {
+                            QMessageBox::critical(m_widget,
+                            tr("Import Widget State Error"),
+                            tr("Incompatible JSON file"));
+                        }
+                    }
+                    else
+                    {
+                        QMessageBox::critical(m_widget,
+                        tr("Import Widget State Error"),
+                        parseError.errorString());
+                    }
                 }
                 else
                 {
                     QMessageBox::critical(m_widget,
                     tr("Import Widget State Error"),
-                    tr("Incompatible JSON file"));
+                    file.errorString());
                 }
             }
-            else
-            {
-                QMessageBox::critical(m_widget,
-                tr("Import Widget State Error"),
-                parseError.errorString());
-            }
-        }
-        else
-        {
-            QMessageBox::critical(m_widget,
-            tr("Import Widget State Error"),
-            file.errorString());
         }
     }
+
+    if(!fileList.isEmpty())
+    {
+        QFileInfo fileInfo(fileList.first());
+        settings.setValue(SERIAL_ESCAPE_JSON_KEY_FILE,
+        fileInfo.canonicalFilePath());
+    }
+
+    return returnList;
 }
 
 void SerialEscape::removeWidget(QAction *action)
@@ -452,10 +614,10 @@ void SerialEscape::resetEvent()
         int time = transferTimeHint(DEF_BAUD_RATE);
         int size = transferSizeHint(DEF_BAUD_RATE);
 
-        if((!SerialPort::setBaudRate(m_port, DEF_BAUD_RATE))
-        || (!SerialPort::setTransferTime(m_port, time, time))
-        || (!SerialPort::setTransferSize(m_port, size, size))
-        || (!SerialPort::clearAll(m_port)))
+        if((!setBaudRate(m_port, DEF_BAUD_RATE))
+        || (!setTransferTime(m_port, time, time))
+        || (!setTransferSize(m_port, size, size))
+        || (!clearAll(m_port)))
         {
             emit errorMessage(QString(metaObject()->className()) +
             "::" + __FUNCTION__ + " -> " + m_port->errorString());
@@ -472,10 +634,10 @@ void SerialEscape::resetEvent2()
         int time = transferTimeHint(DEF_BAUD_RATE);
         int size = transferSizeHint(DEF_BAUD_RATE);
 
-        if((!SerialPort::setBaudRate(m_port, DEF_BAUD_RATE))
-        || (!SerialPort::setTransferTime(m_port, time, time))
-        || (!SerialPort::setTransferSize(m_port, size, size))
-        || (!SerialPort::clearAll(m_port)))
+        if((!setBaudRate(m_port, DEF_BAUD_RATE))
+        || (!setTransferTime(m_port, time, time))
+        || (!setTransferSize(m_port, size, size))
+        || (!clearAll(m_port)))
         {
             emit errorMessage(QString(metaObject()->className()) +
             "::" + __FUNCTION__ + " -> " + m_port->errorString());
@@ -1640,9 +1802,9 @@ bool SerialEscape::parseData(SerialFunction function, const QByteArray &data,
                 int time = transferTimeHint(m_baudRate);
                 int size = transferSizeHint(m_baudRate);
 
-                if((!SerialPort::setBaudRate(m_port, m_baudRate))
-                || (!SerialPort::setTransferTime(m_port, time, time))
-                || (!SerialPort::setTransferSize(m_port, size, size)))
+                if((!setBaudRate(m_port, m_baudRate))
+                || (!setTransferTime(m_port, time, time))
+                || (!setTransferSize(m_port, size, size)))
                 {
                     emit errorMessage(QString(metaObject()->className()) +
                     "::" + __FUNCTION__ + " -> " + m_port->errorString());
@@ -16146,7 +16308,7 @@ SerialWindow *SerialEscape::newTerminalWindow(int windowHandle,
 
     myWindow = new SerialTerminal(name, m_settings);
     myWindow->setAttribute(Qt::WA_DeleteOnClose, false);
-    myWindow->setAttribute(Qt::WA_QuitOnClose, false);
+    myWindow->setAttribute(Qt::WA_QuitOnClose, true);
     myWindow->setWindowHandle(windowHandle);
 
     connect(myWindow, SIGNAL(transmit(QByteArray,QWidget*)),
@@ -16196,7 +16358,7 @@ SerialWindow *SerialEscape::newOscilloscopeWindow(int windowHandle,
 
     myWindow = new SerialOscilloscope(name, m_settings);
     myWindow->setAttribute(Qt::WA_DeleteOnClose, false);
-    myWindow->setAttribute(Qt::WA_QuitOnClose, false);
+    myWindow->setAttribute(Qt::WA_QuitOnClose, true);
     myWindow->setWindowHandle(windowHandle);
 
     connect(myWindow, SIGNAL(errorMessage(QString)),
@@ -16243,7 +16405,7 @@ SerialWindow *SerialEscape::newTableWindow(int windowHandle,
 
     myWindow = new SerialTable(name, m_settings);
     myWindow->setAttribute(Qt::WA_DeleteOnClose, false);
-    myWindow->setAttribute(Qt::WA_QuitOnClose, false);
+    myWindow->setAttribute(Qt::WA_QuitOnClose, true);
     myWindow->setWindowHandle(windowHandle);
 
     connect(myWindow, SIGNAL(errorMessage(QString)),
@@ -16290,7 +16452,7 @@ SerialWindow *SerialEscape::newTreeWindow(int windowHandle,
 
     myWindow = new SerialTree(name, m_settings);
     myWindow->setAttribute(Qt::WA_DeleteOnClose, false);
-    myWindow->setAttribute(Qt::WA_QuitOnClose, false);
+    myWindow->setAttribute(Qt::WA_QuitOnClose, true);
     myWindow->setWindowHandle(windowHandle);
 
     connect(myWindow, SIGNAL(errorMessage(QString)),
@@ -16337,7 +16499,7 @@ SerialWindow *SerialEscape::newGraphicsWindow(int windowHandle,
 
     myWindow = new SerialGraphics(name, m_settings);
     myWindow->setAttribute(Qt::WA_DeleteOnClose, false);
-    myWindow->setAttribute(Qt::WA_QuitOnClose, false);
+    myWindow->setAttribute(Qt::WA_QuitOnClose, true);
     myWindow->setWindowHandle(windowHandle);
 
     connect(myWindow, SIGNAL(errorMessage(QString)),
@@ -16384,7 +16546,7 @@ SerialWindow *SerialEscape::newInterfaceWindow(int windowHandle,
 
     myWindow = new SerialInterface(name, m_settings);
     myWindow->setAttribute(Qt::WA_DeleteOnClose, false);
-    myWindow->setAttribute(Qt::WA_QuitOnClose, false);
+    myWindow->setAttribute(Qt::WA_QuitOnClose, true);
     myWindow->setWindowHandle(windowHandle);
 
     connect(myWindow,

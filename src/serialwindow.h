@@ -20,7 +20,7 @@
 #include <QtWidgets>
 
 #include "ilshared.h"
-#include "projectdefines.h"
+#include "main.h"
 
 #ifdef Q_OS_WIN
     #define BY_NAME "USERNAME"

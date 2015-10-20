@@ -1,12 +1,12 @@
 // by: Kwabena W. Agyeman
 
-#include "main.h"
-#include "il.h"
 #include <QtCore>
 #include <QtGui>
 #include <QtWidgets>
 #include <QtSerialPort>
 #include <QtNetwork>
+#include "il.h"
+#include "serialescape.h"
 #define ICON_PATH ":media/icons/omniacreator-icon/omniacreator.png"
 #define SPLASH_PATH ":media/splash/omniacreator-splash/splash-small.png"
 
@@ -49,9 +49,9 @@ QIODevice *getSerialPort(QWidget *parent)
             && port->setFlowControl(QSerialPort::NoFlowControl)
             && port->setParity(QSerialPort::NoParity)
             && port->setStopBits(QSerialPort::OneStop)
+            && port->open(QIODevice::ReadWrite)
             && port->setDataTerminalReady(true)
             && port->setRequestToSend(true)
-            && port->open(QIODevice::ReadWrite)
             && port->setBreakEnabled(true))
             {
                 QThread::msleep(100);
@@ -310,6 +310,10 @@ int main(int argc, char *argv[])
     QSplashScreen splash(QPixmap(QStringLiteral(SPLASH_PATH)));
     splash.show();
 
+    QSettings settings;
+    SerialOscilloscope::initFftw(&settings, &splash);
+    SerialEscape escape(NULL, NULL, &settings, &splash);
+
     QMessageBox box(QMessageBox::Question,
     QApplication::applicationName(),
     QObject::tr("What do you want to do?"),
@@ -323,9 +327,13 @@ int main(int argc, char *argv[])
     QMessageBox::AcceptRole);
     QPushButton *button1=box.addButton(QObject::tr("Export Interface Library"),
     QMessageBox::AcceptRole);
+    QPushButton *button2=box.addButton(QObject::tr("Load Exported JSON State"),
+    QMessageBox::AcceptRole);
 
     box.setDefaultButton(button0);
     box.exec();
+
+    int exitStatus = EXIT_SUCCESS;
 
     if(box.clickedButton() == button0)
     {
@@ -333,15 +341,33 @@ int main(int argc, char *argv[])
 
         if(device)
         {
-            QMainWindow window; window.show();
-            splash.finish(&window);
-            return application.exec();
+            escape.setPort(device);
+            escape.setWidget(escape.serialTerminal()->widget());
+            splash.finish(escape.serialTerminal());
+            escape.serialTerminal()->show();
+
+            exitStatus = application.exec();
+            delete device;
         }
     }
     else if(box.clickedButton() == button1)
     {
         exportInterfaceLibrary(&splash);
     }
+    else if(box.clickedButton() == button2)
+    {
+        QList<SerialWindow *> list = escape.openJSON();
 
-    return EXIT_SUCCESS;
+        if(!list.isEmpty())
+        {
+            splash.finish(list.first());
+            escape.serialTerminal()->close();
+            delete escape.serialTerminal();
+
+            exitStatus = application.exec();
+        }
+    }
+
+    SerialOscilloscope::finiFftw();
+    return exitStatus;
 }

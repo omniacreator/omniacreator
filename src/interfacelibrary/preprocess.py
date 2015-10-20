@@ -25,7 +25,7 @@ IGNORE = [
             "simpletext.h",
             "serial.h",
             "fdserial.h",
-            "serialdevice.h"
+            "QtGlobal"
          ]
 
 def preprocess_file(file_name, include_paths, include_history = []):

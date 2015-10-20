@@ -17,13 +17,14 @@ TEMPLATE = app
 TARGET = omniacreator
 RC_ICONS = media/icons/omniacreator-icon/omniacreator.ico
 ICON = media/icons/omniacreator-icon/omniacreator.icns
+QT += bluetooth
 QT += concurrent
+QT += network
 QT += opengl
 QT += printsupport
 QT += serialport
 QT += svg
 QT += widgets
-QT += network
 DEFINES += PROJECT_FULL_NAME=\"$$PROJECT_FULL_NAME\"
 DEFINES += PROJECT_FULL_NAME_WO_SPACES=\"$$PROJECT_FULL_NAME_WO_SPACES\"
 DEFINES += PROJECT_SHORT_NAME=\"$$PROJECT_SHORT_NAME\"
@@ -41,35 +42,35 @@ DEFINES += QT_USE_QSTRINGBUILDER
 # include: OmniaCreator
 
 HEADERS += $$PWD/main.h
-#HEADERS += $$PWD/serialescape.h
-#SOURCES += $$PWD/serialwindow.h
-#HEADERS += $$PWD/serialgraphics.h
-#HEADERS += $$PWD/serialinterface.h
-#HEADERS += $$PWD/serialoscilloscope.h
-#HEADERS += $$PWD/serialtable.h
-#HEADERS += $$PWD/serialterminal.h
-#HEADERS += $$PWD/serialtree.h
+HEADERS += $$PWD/serialescape.h
+HEADERS += $$PWD/serialwindow.h
+HEADERS += $$PWD/serialgraphics.h
+HEADERS += $$PWD/serialinterface.h
+HEADERS += $$PWD/serialoscilloscope.h
+HEADERS += $$PWD/serialtable.h
+HEADERS += $$PWD/serialterminal.h
+HEADERS += $$PWD/serialtree.h
 HEADERS += $$PWD/utilrasterdialog.h
 HEADERS += $$PWD/utilvectordialog.h
 HEADERS += $$PWD/utilvectordialogwowh.h
 SOURCES += $$PWD/main.cpp
-#SOURCES += $$PWD/serialescape.cpp
-#SOURCES += $$PWD/serialwindow.cpp
-#SOURCES += $$PWD/serialgraphics.cpp
-#SOURCES += $$PWD/serialinterface.cpp
-#SOURCES += $$PWD/serialoscilloscope.cpp
-#SOURCES += $$PWD/serialtable.cpp
-#SOURCES += $$PWD/serialterminal.cpp
-#SOURCES += $$PWD/serialtree.cpp
+SOURCES += $$PWD/serialescape.cpp
+SOURCES += $$PWD/serialwindow.cpp
+SOURCES += $$PWD/serialgraphics.cpp
+SOURCES += $$PWD/serialinterface.cpp
+SOURCES += $$PWD/serialoscilloscope.cpp
+SOURCES += $$PWD/serialtable.cpp
+SOURCES += $$PWD/serialterminal.cpp
+SOURCES += $$PWD/serialtree.cpp
 SOURCES += $$PWD/utilrasterdialog.cpp
 SOURCES += $$PWD/utilvectordialog.cpp
 SOURCES += $$PWD/utilvectordialogwowh.cpp
-#FORMS += $$PWD/serialgraphics.ui
-#FORMS += $$PWD/serialinterface.ui
-#FORMS += $$PWD/serialoscilloscope.ui
-#FORMS += $$PWD/serialtable.ui
-#FORMS += $$PWD/serialterminal.ui
-#FORMS += $$PWD/serialtree.ui
+FORMS += $$PWD/serialgraphics.ui
+FORMS += $$PWD/serialinterface.ui
+FORMS += $$PWD/serialoscilloscope.ui
+FORMS += $$PWD/serialtable.ui
+FORMS += $$PWD/serialterminal.ui
+FORMS += $$PWD/serialtree.ui
 FORMS += $$PWD/utilrasterdialog.ui
 FORMS += $$PWD/utilvectordialog.ui
 FORMS += $$PWD/utilvectordialogwowh.ui
@@ -77,53 +78,51 @@ RESOURCES += $$PWD/omniacreator.qrc
 
 # include: InterfaceLibrary
 
-!exists($$OUT_PWD/InterfaceLibrary.h) {
-system(python $$PWD/interfacelibrary/preprocess.py \
-$$PWD/interfacelibrary/il.h \
-$$OUT_PWD/InterfaceLibrary.h)
-}
-
-il.target = $$OUT_PWD/InterfaceLibrary.h
-il.commands = python $$PWD/interfacelibrary/preprocess.py \
-$$PWD/interfacelibrary/il.h \
-$$OUT_PWD/InterfaceLibrary.h
-il.depends = $$PWD/interfacelibrary/*.h
-
-QMAKE_EXTRA_TARGETS += il
-PRE_TARGETDEPS += $$OUT_PWD/InterfaceLibrary.h
-
 INCLUDEPATH += $$PWD/interfacelibrary
 DEPENDPATH += $$PWD/interfacelibrary
-HEADERS += $$PWD/interfacelibrary/il.h
-HEADERS += $$PWD/interfacelibrary/ilshared.h
-HEADERS += $$PWD/interfacelibrary/ildependencies.h
-HEADERS += $$PWD/interfacelibrary/ilcore.h
-HEADERS += $$PWD/interfacelibrary/ilterminal.h
-HEADERS += $$PWD/interfacelibrary/iloscilloscope.h
-HEADERS += $$PWD/interfacelibrary/iltable.h
-HEADERS += $$PWD/interfacelibrary/iltree.h
-HEADERS += $$PWD/interfacelibrary/ilgraphics.h
-HEADERS += $$PWD/interfacelibrary/ilinterface.h
-HEADERS += $$PWD/interfacelibrary/iloscilloscopebar.h
-HEADERS += $$PWD/interfacelibrary/iloscilloscopecurve.h
-HEADERS += $$PWD/interfacelibrary/iloscilloscopegraph.h
-HEADERS += $$PWD/interfacelibrary/iloscilloscopebox.h
-HEADERS += $$PWD/interfacelibrary/ilinterfacegroupbox.h
-HEADERS += $$PWD/interfacelibrary/ilinterfacepushbutton.h
-HEADERS += $$PWD/interfacelibrary/ilinterfaceradiobutton.h
-HEADERS += $$PWD/interfacelibrary/ilinterfacecheckbox.h
-HEADERS += $$PWD/interfacelibrary/ilinterfacelineedit.h
-HEADERS += $$PWD/interfacelibrary/ilinterfaceintspinbox.h
-HEADERS += $$PWD/interfacelibrary/ilinterfacebinspinbox.h
-HEADERS += $$PWD/interfacelibrary/ilinterfacehexspinbox.h
-HEADERS += $$PWD/interfacelibrary/ilinterfacedoublespinbox.h
-HEADERS += $$PWD/interfacelibrary/ilinterfacetimeedit.h
-HEADERS += $$PWD/interfacelibrary/ilinterfacedateedit.h
-HEADERS += $$PWD/interfacelibrary/ilinterfacedatetimeedit.h
-HEADERS += $$PWD/interfacelibrary/ilinterfaceslider.h
-HEADERS += $$PWD/interfacelibrary/ilinterfacelabel.h
-HEADERS += $$PWD/interfacelibrary/ilinterfaceprogressbar.h
-HEADERS += $$PWD/interfacelibrary/ilinterfaceseperator.h
+IL_DEPENDS += $$PWD/interfacelibrary/il.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilshared.h
+IL_DEPENDS += $$PWD/interfacelibrary/ildependencies.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilcore.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilterminal.h
+IL_DEPENDS += $$PWD/interfacelibrary/iloscilloscope.h
+IL_DEPENDS += $$PWD/interfacelibrary/iltable.h
+IL_DEPENDS += $$PWD/interfacelibrary/iltree.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilgraphics.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilinterface.h
+IL_DEPENDS += $$PWD/interfacelibrary/iloscilloscopebar.h
+IL_DEPENDS += $$PWD/interfacelibrary/iloscilloscopecurve.h
+IL_DEPENDS += $$PWD/interfacelibrary/iloscilloscopegraph.h
+IL_DEPENDS += $$PWD/interfacelibrary/iloscilloscopebox.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilinterfacegroupbox.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilinterfacepushbutton.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilinterfaceradiobutton.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilinterfacecheckbox.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilinterfacelineedit.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilinterfaceintspinbox.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilinterfacebinspinbox.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilinterfacehexspinbox.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilinterfacedoublespinbox.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilinterfacetimeedit.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilinterfacedateedit.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilinterfacedatetimeedit.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilinterfaceslider.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilinterfacelabel.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilinterfaceprogressbar.h
+IL_DEPENDS += $$PWD/interfacelibrary/ilinterfaceseperator.h
+HEADERS += $$IL_DEPENDS
+
+IL_TARGET = $$OUT_PWD/InterfaceLibrary.h
+IL_COMMANDS = python $$PWD/interfacelibrary/preprocess.py \
+$$PWD/interfacelibrary/il.h \
+$$IL_TARGET
+
+!exists($$IL_TARGET):system($$IL_COMMANDS)
+il.commands = $$IL_COMMANDS
+il.depends = $$IL_DEPENDS
+il.target = $$IL_TARGET
+QMAKE_EXTRA_TARGETS += il
+PRE_TARGETDEPS += $$IL_TARGET
 
 # include: QCustomPlot
 
