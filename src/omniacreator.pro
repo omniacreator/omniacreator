@@ -15,8 +15,7 @@ PROJECT_EMAIL = "$${PROJECT_SHORT_NAME}@$${PROJECT_DOMAIN_NAME}"
 
 TEMPLATE = app
 TARGET = omniacreator
-RC_ICONS = media/icons/omniacreator-icon/omniacreator.ico
-ICON = media/icons/omniacreator-icon/omniacreator.icns
+
 QT += bluetooth
 QT += concurrent
 QT += network
@@ -25,6 +24,10 @@ QT += printsupport
 QT += serialport
 QT += svg
 QT += widgets
+
+RC_ICONS = media/icons/omniacreator-icon/omniacreator.ico
+ICON = media/icons/omniacreator-icon/omniacreator.icns
+
 DEFINES += PROJECT_FULL_NAME=\"$$PROJECT_FULL_NAME\"
 DEFINES += PROJECT_FULL_NAME_WO_SPACES=\"$$PROJECT_FULL_NAME_WO_SPACES\"
 DEFINES += PROJECT_SHORT_NAME=\"$$PROJECT_SHORT_NAME\"
@@ -76,6 +79,15 @@ FORMS += $$PWD/utilvectordialog.ui
 FORMS += $$PWD/utilvectordialogwowh.ui
 RESOURCES += $$PWD/omniacreator.qrc
 
+INSTALLS_DIR = $$OUT_PWD/install
+
+target.path = $$INSTALLS_DIR
+INSTALLS += target
+
+windeploy.path = $$INSTALLS_DIR
+windeploy.extra = windeployqt $$INSTALLS_DIR
+win32|win64: INSTALLS += windeploy
+
 # include: InterfaceLibrary
 
 INCLUDEPATH += $$PWD/interfacelibrary
@@ -114,15 +126,15 @@ HEADERS += $$IL_DEPENDS
 
 IL_TARGET = $$OUT_PWD/InterfaceLibrary.h
 IL_COMMANDS = python $$PWD/interfacelibrary/preprocess.py \
-$$PWD/interfacelibrary/il.h \
-$$IL_TARGET
+$$PWD/interfacelibrary/il.h $$IL_TARGET
 
-!exists($$IL_TARGET):system($$IL_COMMANDS)
 il.commands = $$IL_COMMANDS
 il.depends = $$IL_DEPENDS
 il.target = $$IL_TARGET
 QMAKE_EXTRA_TARGETS += il
 PRE_TARGETDEPS += $$IL_TARGET
+
+!exists($$IL_TARGET): system($$IL_COMMANDS)
 
 # include: QCustomPlot
 
@@ -141,7 +153,8 @@ win32: HEADERS += $$PWD/fftw3/windows/32/fftw3.h
 win64: HEADERS += $$PWD/fftw3/windows/64/fftw3.h
 win32: LIBS += -L$$PWD/fftw3/windows/32 -llibfftw3-3
 win64: LIBS += -L$$PWD/fftw3/windows/64 -llibfftw3-3
-win32: OTHER_FILES += $$PWD/fftw3/windows/32/libfftw3-3.def
-win64: OTHER_FILES += $$PWD/fftw3/windows/64/libfftw3-3.def
-win32: OTHER_FILES += $$PWD/fftw3/windows/32/libfftw3-3.dll
-win64: OTHER_FILES += $$PWD/fftw3/windows/64/libfftw3-3.dll
+
+win32|win64: fftw.path = $$INSTALLS_DIR
+win32: fftw.files = $$PWD/fftw3/windows/32/libfftw3-3.dll
+win64: fftw.files = $$PWD/fftw3/windows/64/libfftw3-3.dll
+INSTALLS += fftw

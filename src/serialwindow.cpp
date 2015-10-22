@@ -55,6 +55,28 @@ void SerialWindow::restoreState()
             mainWindow->restoreState(mySettings.value(keyState()).
                                      toByteArray());
         }
+
+        foreach(QObject *child, mainWindow->centralWidget()->children())
+        {
+            QSplitter *splitter = qobject_cast<QSplitter *>(child);
+
+            if(splitter)
+            {
+                if(mySettings.contains(keyState() +
+                '/' + splitter->objectName()))
+                {
+                    splitter->restoreState(mySettings.value(keyState() +
+                    '/'+ splitter->objectName()).toByteArray());
+                }
+
+                if(mySettings.contains(keyGeometry() +
+                '/' + splitter->objectName()))
+                {
+                    splitter->restoreGeometry(mySettings.value(keyGeometry() +
+                    '/' + splitter->objectName()).toByteArray());
+                }
+            }
+        }
     }
 
     if(mySettings.contains(keyGeometry()))
@@ -528,6 +550,20 @@ void SerialWindow::closeEvent(QCloseEvent *event)
         if(mainWindow)
         {
             settings.setValue(keyState(), mainWindow->saveState());
+
+            foreach(QObject *child, mainWindow->centralWidget()->children())
+            {
+                QSplitter *splitter = qobject_cast<QSplitter *>(child);
+
+                if(splitter)
+                {
+                    settings.setValue(keyState() +
+                    '/' + splitter->objectName(), splitter->saveState());
+
+                    settings.setValue(keyGeometry() +
+                    '/' + splitter->objectName(), splitter->saveGeometry());
+                }
+            }
         }
 
         settings.setValue(keyGeometry(), saveGeometry());

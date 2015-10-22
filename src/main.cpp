@@ -323,11 +323,16 @@ int main(int argc, char *argv[])
     Qt::WindowSystemMenuHint |
     Qt::WindowCloseButtonHint);
 
+    box.setInformativeText(QObject::
+    tr("<font color=\"grey\">Version %L1 - Copyright (c) %L2").
+    arg(QStringLiteral(PROJECT_VERSION_STR).replace('_', ' ')).
+    arg(QStringLiteral(PROJECT_COPYRIGHT_STR).replace('_', ' ')));
+
     QPushButton *button0=box.addButton(QObject::tr("Open Serial Port"),
     QMessageBox::AcceptRole);
-    QPushButton *button1=box.addButton(QObject::tr("Export Interface Library"),
+    QPushButton *button1=box.addButton(QObject::tr("Load Exported JSON State"),
     QMessageBox::AcceptRole);
-    QPushButton *button2=box.addButton(QObject::tr("Load Exported JSON State"),
+    QPushButton *button2=box.addButton(QObject::tr("Export Interface Library"),
     QMessageBox::AcceptRole);
 
     box.setDefaultButton(button0);
@@ -343,18 +348,17 @@ int main(int argc, char *argv[])
         {
             escape.setPort(device);
             escape.setWidget(escape.serialTerminal()->widget());
+
             splash.finish(escape.serialTerminal());
+            escape.serialTerminal()->setErrorMessageLabelLogVisible(true);
+            QObject::connect(&escape, SIGNAL(errorMessage(QString)),
+            escape.serialTerminal(), SLOT(errorMessage(QString)));
             escape.serialTerminal()->show();
 
-            exitStatus = application.exec();
-            delete device;
+            exitStatus = application.exec(); delete device;
         }
     }
     else if(box.clickedButton() == button1)
-    {
-        exportInterfaceLibrary(&splash);
-    }
-    else if(box.clickedButton() == button2)
     {
         QList<SerialWindow *> list = escape.openJSON();
 
@@ -366,6 +370,10 @@ int main(int argc, char *argv[])
 
             exitStatus = application.exec();
         }
+    }
+    else if(box.clickedButton() == button2)
+    {
+        exportInterfaceLibrary(&splash);
     }
 
     SerialOscilloscope::finiFftw();

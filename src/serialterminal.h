@@ -57,7 +57,11 @@ public:
 
     void receive(const QByteArray &bytes);
 
+    void setErrorMessageLabelLogVisible(bool visible);
+
 public slots:
+
+    void errorMessage(const QString &message);
 
     void userReset();
 

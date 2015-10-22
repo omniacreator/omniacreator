@@ -28,6 +28,15 @@ SerialWindow(title, settings, parent), m_ui(new Ui::SerialTerminal)
 
     m_stateMachine = ASCII; m_shiftReg = QByteArray(); getTabWidth();
 
+    m_ui->xlabel->setVisible(false);
+    m_ui->errorLabel->setVisible(false);
+    m_ui->errorLog->setVisible(false);
+
+    QTextCursor cursor = m_ui->errorLog->textCursor();
+    QTextCharFormat format = cursor.charFormat();
+    format.setForeground(Qt::red); cursor.setCharFormat(format);
+    m_ui->errorLog->setTextCursor(cursor);
+
     connect(m_ui->tx, SIGNAL(returnPressed()),
             this, SLOT(returnPressed()));
 
@@ -500,6 +509,21 @@ void SerialTerminal::receive(const QByteArray &bytes)
     }
 
     insertText(buffer); buffer.clear();
+}
+
+void SerialTerminal::setErrorMessageLabelLogVisible(bool visible)
+{
+    m_ui->xlabel->setVisible(visible);
+    m_ui->errorLabel->setVisible(visible);
+    m_ui->errorLog->setVisible(visible);
+}
+
+void SerialTerminal::errorMessage(const QString &message)
+{
+    if(!message.isEmpty())
+    {
+        m_ui->errorLog->appendPlainText(message);
+    }
 }
 
 void SerialTerminal::userReset()
