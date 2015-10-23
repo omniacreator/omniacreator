@@ -79,7 +79,7 @@ FORMS += $$PWD/utilvectordialog.ui
 FORMS += $$PWD/utilvectordialogwowh.ui
 RESOURCES += $$PWD/omniacreator.qrc
 
-INSTALLS_DIR = $$OUT_PWD/install
+INSTALLS_DIR = $$OUT_PWD/packages/com.omniacreator.root/data
 
 target.path = $$INSTALLS_DIR
 INSTALLS += target
@@ -125,7 +125,7 @@ IL_DEPENDS += $$PWD/interfacelibrary/ilinterfaceseperator.h
 HEADERS += $$IL_DEPENDS
 
 IL_TARGET = $$OUT_PWD/InterfaceLibrary.h
-IL_COMMANDS = python $$PWD/interfacelibrary/preprocess.py \
+IL_COMMANDS = python -u $$PWD/interfacelibrary/preprocess.py \
 $$PWD/interfacelibrary/il.h $$IL_TARGET
 
 il.commands = $$IL_COMMANDS
@@ -158,3 +158,82 @@ win32|win64: fftw.path = $$INSTALLS_DIR
 win32: fftw.files = $$PWD/fftw3/windows/32/libfftw3-3.dll
 win64: fftw.files = $$PWD/fftw3/windows/64/libfftw3-3.dll
 INSTALLS += fftw
+
+# release step 1:
+
+sign.path = $$INSTALLS_DIR
+sign.extra = python -u $$PWD/sign.py $$INSTALLS_DIR
+#INSTALLS += sign
+
+# release step 2:
+
+ifw_config.path = $$OUT_PWD/config
+ifw_config.extra = echo \
+^<?xml version=\"1.0\" encoding=\"UTF-8\"?^>\
+^<Installer^>\
+    ^<Name^>$$replace(PROJECT_FULL_NAME, "_", " ")^</Name^>\
+    ^<Version^>$$PROJECT_VERSION^</Version^>\
+    ^<Title^>$$replace(PROJECT_FULL_NAME, "_", " ")^</Title^>\
+    ^<Publisher^>$$replace(PROJECT_VENDOR, "_", " ")^</Publisher^>\
+    ^<ProductUrl^>$$PROJECT_URL^</ProductUrl^>\
+    ^<InstallerApplicationIcon^>$$PWD/media/icons/omniacreator-icon/omniacreator^</InstallerApplicationIcon^>\
+    ^<InstallerWindowIcon^>$$PWD/src/media/icons/omniacreator-icon/omniacreator.png^</InstallerWindowIcon^>\
+    ^<RunProgram^>@TargetDir@/$$PROJECT_SHORT_NAME^</RunProgram^>\
+    ^<StartMenuDir^>$$replace(PROJECT_FULL_NAME, "_", " ")^</StartMenuDir^>\
+    ^<TargetDir^>@ApplicationsDir@/$$replace(PROJECT_FULL_NAME, "_", " ")^</TargetDir^>\
+    ^<AllowNonAsciiCharacters^>true^</AllowNonAsciiCharacters^>\
+    ^<AllowSpaceInPath^>true^</AllowSpaceInPath^>\
+^</Installer^>> $$OUT_PWD/config/config.xml
+INSTALLS += ifw_config
+
+# release step 3:
+
+ifw_license.path = $$OUT_PWD/packages/com.omniacreator.root/meta
+ifw_license.files = $$PWD/../LICENSE
+INSTALLS += ifw_license
+
+# release step 4:
+
+ifw_package.path = $$OUT_PWD/packages/com.omniacreator.root/meta
+ifw_package.extra = echo \
+^<?xml version=\"1.0\" encoding=\"UTF-8\"?^>\
+^<Package^>\
+    ^<DisplayName^>$$replace(PROJECT_FULL_NAME, "_", " ")^</DisplayName^>\
+    ^<Description^>^</Description^>\
+    ^<Version^>$$PROJECT_VERSION^</Version^>\
+    ^<ReleaseDate^>^</ReleaseDate^>\
+    ^<Name^>com.omniacreator.root^</Name^>\
+    ^<Licenses^>\
+        ^<License name=\"License Agreement\" file=\"LICENSE\" /^>\
+    ^</Licenses^>\
+    ^<Script^>script.qs^</Script^>\
+    ^<ForcedInstallation^>true^</ForcedInstallation^>\
+    ^<RequiresAdminRights^>true^</RequiresAdminRights^>\
+^</Package^>> $$OUT_PWD/packages/com.omniacreator.root/meta/package.xml
+INSTALLS += ifw_package
+
+# release step 5:
+
+ifw_script.path = $$OUT_PWD/packages/com.omniacreator.root/meta
+ifw_script.extra = echo \
+function Component()\
+{\
+}> $$OUT_PWD/packages/com.omniacreator.root/meta/script.qs
+INSTALLS += ifw_script
+
+# release step 6:
+
+win32|win64: { INSTALLER_NAME = $$OUT_PWD/$${PROJECT_SHORT_NAME}.exe
+} else:macx: { INSTALLER_NAME = $$OUT_PWD/$${PROJECT_SHORT_NAME}.app
+} else: { INSTALLER_NAME = $$OUT_PWD/$${PROJECT_SHORT_NAME}.run }
+
+ifw_binarycreator.path = $$OUT_PWD
+ifw_binarycreator.extra = binarycreator --offline-only --verbose \
+-c $$OUT_PWD/config/config.xml -p $$OUT_PWD/packages $$INSTALLER_NAME
+INSTALLS += ifw_binarycreator
+
+# release step 7:
+
+ifw_sign.path = $$OUT_PWD
+ifw_sign.extra = python -u $$PWD/sign.py $$INSTALLER_NAME
+INSTALLS += ifw_sign
