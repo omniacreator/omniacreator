@@ -34,7 +34,7 @@
 #include <QtWidgets>
 #include <QSerialPort>
 
-#include "main.h"
+#include "omniacreator.h"
 #include "serialwindow.h"
 #include "serialterminal.h"
 #include "serialoscilloscope.h"

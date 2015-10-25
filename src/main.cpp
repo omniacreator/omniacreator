@@ -1,14 +1,6 @@
 // by: Kwabena W. Agyeman
 
-#include <QtCore>
-#include <QtGui>
-#include <QtWidgets>
-#include <QtSerialPort>
-#include <QtNetwork>
-#include "il.h"
-#include "serialescape.h"
-#define ICON_PATH ":media/icons/omniacreator-icon/omniacreator.png"
-#define SPLASH_PATH ":media/splash/omniacreator-splash/splash-small.png"
+#include "main.h"
 
 QIODevice *getSerialPort(QWidget *parent)
 {
@@ -192,7 +184,7 @@ void exportCInterfaceLibrary(QWidget *parent)
 
     if(!string.isEmpty())
     {
-        QFile::copy(":build/InterfaceLibrary.h",
+        QFile::copy(":/build/InterfaceLibrary.h",
         QDir::fromNativeSeparators(QDir::cleanPath(string +
         QDir::separator() + "InterfaceLibrary.h")));
     }
@@ -206,59 +198,59 @@ void exportSPINInterfaceLibrary(QWidget *parent)
 
     if(!string.isEmpty())
     {
-        QFile::copy(":interfacelibrary/ilcore.spin",
+        QFile::copy(":/interfacelibrary/ilcore.spin",
         QDir::fromNativeSeparators(QDir::cleanPath(string +
         QDir::separator() + "ilcore.spin")));
 
-        QFile::copy(":interfacelibrary/ilfullduplexserialdriver.spin",
+        QFile::copy(":/interfacelibrary/ilfullduplexserialdriver.spin",
         QDir::fromNativeSeparators(QDir::cleanPath(string +
         QDir::separator() + "ilfullduplexserialdriver.spin")));
 
-        QFile::copy(":interfacelibrary/iloscilloscope.spin",
+        QFile::copy(":/interfacelibrary/iloscilloscope.spin",
         QDir::fromNativeSeparators(QDir::cleanPath(string +
         QDir::separator() + "iloscilloscope.spin")));
 
-        QFile::copy(":interfacelibrary/iloscilloscopebar.spin",
+        QFile::copy(":/interfacelibrary/iloscilloscopebar.spin",
         QDir::fromNativeSeparators(QDir::cleanPath(string +
         QDir::separator() + "iloscilloscopebar.spin")));
 
-        QFile::copy(":interfacelibrary/iloscilloscopebox.spin",
+        QFile::copy(":/interfacelibrary/iloscilloscopebox.spin",
         QDir::fromNativeSeparators(QDir::cleanPath(string +
         QDir::separator() + "iloscilloscopebox.spin")));
 
-        QFile::copy(":interfacelibrary/iloscilloscopecurve.spin",
+        QFile::copy(":/interfacelibrary/iloscilloscopecurve.spin",
         QDir::fromNativeSeparators(QDir::cleanPath(string +
         QDir::separator() + "iloscilloscopecurve.spin")));
 
-        QFile::copy(":interfacelibrary/iloscilloscopegraph.spin",
+        QFile::copy(":/interfacelibrary/iloscilloscopegraph.spin",
         QDir::fromNativeSeparators(QDir::cleanPath(string +
         QDir::separator() + "iloscilloscopegraph.spin")));
 
-        QFile::copy(":interfacelibrary/ilterminal.spin",
+        QFile::copy(":/interfacelibrary/ilterminal.spin",
         QDir::fromNativeSeparators(QDir::cleanPath(string +
         QDir::separator() + "ilterminal.spin")));
 
-        QFile::copy(":interfacelibrary/examples/Serial Core Demo.spin",
+        QFile::copy(":/interfacelibrary/examples/Serial Core Demo.spin",
         QDir::fromNativeSeparators(QDir::cleanPath(string +
         QDir::separator() + "Serial Core Demo.spin")));
 
-        QFile::copy(":interfacelibrary/examples/Plot Bar Demo.spin",
+        QFile::copy(":/interfacelibrary/examples/Plot Bar Demo.spin",
         QDir::fromNativeSeparators(QDir::cleanPath(string +
         QDir::separator() + "Plot Bar Demo.spin")));
 
-        QFile::copy(":interfacelibrary/examples/Plot Box Demo.spin",
+        QFile::copy(":/interfacelibrary/examples/Plot Box Demo.spin",
         QDir::fromNativeSeparators(QDir::cleanPath(string +
         QDir::separator() + "Plot Box Demo.spin")));
 
-        QFile::copy(":interfacelibrary/examples/Plot Curve Demo.spin",
+        QFile::copy(":/interfacelibrary/examples/Plot Curve Demo.spin",
         QDir::fromNativeSeparators(QDir::cleanPath(string +
         QDir::separator() + "Plot Curve Demo.spin")));
 
-        QFile::copy(":interfacelibrary/examples/Plot Graph Demo.spin",
+        QFile::copy(":/interfacelibrary/examples/Plot Graph Demo.spin",
         QDir::fromNativeSeparators(QDir::cleanPath(string +
         QDir::separator() + "Plot Graph Demo.spin")));
 
-        QFile::copy(":interfacelibrary/examples/Serial Terminal Demo.spin",
+        QFile::copy(":/interfacelibrary/examples/Serial Terminal Demo.spin",
         QDir::fromNativeSeparators(QDir::cleanPath(string +
         QDir::separator() + "Serial Terminal Demo.spin")));
     }

@@ -51,7 +51,7 @@ def signFile(file):
             else:
                 print "Failure"
                 raise
-        else: print "Failure"
+        else: print "Skipping"
         return
     elif sys.platform == "darwin":
         if codsignAvailable and identity:
@@ -61,7 +61,7 @@ def signFile(file):
             else:
                 print "Failure"
                 raise
-        else: print "Failure"
+        else: print "Skipping"
         return
     print "Success"
 
@@ -82,7 +82,7 @@ def main():
 
     target = args.target
     if not os.path.isabs(target):
-        target = os.path.join(os.getcwd(), target)
+        target = os.path.abspath(target)
 
     if os.path.isfile(target): try_signFile(target)
     else:

@@ -43,16 +43,16 @@ where each command is as follows:
 
    Set verbosity to <n>, or 1 if <n> is omitted.  -v2 will output
    the created plans with fftw_print_plan.
-   
+
 -oestimate
 -opatient
 -oexhaustive
- 
+
   Plan with FFTW_ESTIMATE, FFTW_PATIENT, or FFTW_EXHAUSTIVE, respectively.
   The default is FFTW_MEASURE.
 
   If you benchmark FFTW, please use -opatient.
-      
+
 -onthreads=N
 
   Use N threads, if FFTW was compiled with --enable-threads.  N

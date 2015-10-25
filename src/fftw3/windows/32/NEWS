@@ -34,7 +34,7 @@ FFTW 3.3.2
 
 * Added stack-alignment hack necessary for gcc on Windows/i386.  We
   will regret this in ten years (see previous change).
-  
+
 * Fix incompatibility with Intel icc which pretends to be gcc
   but does not support quad precision.
 
@@ -45,7 +45,7 @@ FFTW 3.3.2
 FFTW 3.3.1
 
 * Changes since 3.3.1-beta1:
-  
+
   - Reduced planning time in estimate mode for sizes with large
     prime factors.
 
@@ -117,7 +117,7 @@ FFTW 3.3
   fftw_import_wisdom_from_filename that export/import wisdom
   to a file, which don't require you to open/close the file yourself.
 
-* New function fftw_cost to return FFTW's internal cost metric for 
+* New function fftw_cost to return FFTW's internal cost metric for
   a given plan; thanks to Rhys Ulerich and Nathanael Schaeffer for the
   suggestion.
 
@@ -175,7 +175,7 @@ FFTW 3.2.1
 
 * FAQ was accidentally omitted from 3.2 tarball.
 
-* Remove some extraneous (harmless) files accidentally included in 
+* Remove some extraneous (harmless) files accidentally included in
   a subdirectory of the 3.2 tarball.
 
 FFTW 3.2
@@ -344,7 +344,7 @@ FFTW 3.1
 
 * Various documentation clarifications.
 
-* 64-bit clean.  (Fixes a bug affecting the split guru planner on 
+* 64-bit clean.  (Fixes a bug affecting the split guru planner on
   64-bit machines, reported by David Necas.)
 
 * Fixed Debian bug #259612: inadvertent use of SSE instructions on

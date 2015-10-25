@@ -20,7 +20,7 @@
 #include <QtWidgets>
 
 #include "ilshared.h"
-#include "main.h"
+#include "omniacreator.h"
 
 #ifdef Q_OS_WIN
     #define BY_NAME "USERNAME"
