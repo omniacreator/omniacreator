@@ -204,7 +204,7 @@ INSTALLS += fftw
 
 sign.path = $${INSTALLS_DIR}
 sign.extra = python -u $${PWD}/sign.py $${INSTALLS_DIR}
-# INSTALLS += sign
+INSTALLS += sign
 
 # release step 2:
 
@@ -222,6 +222,7 @@ ifw_config.extra = echo \
     ^<RunProgram^>@TargetDir@/$${PROJECT_SHORT_NAME}^</RunProgram^>\
     ^<StartMenuDir^>$$replace(PROJECT_FULL_NAME, "_", " ")^</StartMenuDir^>\
     ^<TargetDir^>@ApplicationsDir@/$$replace(PROJECT_FULL_NAME, "_", " ")^</TargetDir^>\
+    ^<MaintenanceToolName^>$${PROJECT_SHORT_NAME}-uninstaller^</MaintenanceToolName^>\
 ^</Installer^>> $${OUT_PWD}/config/config.xml
 INSTALLS += ifw_config
 
@@ -238,7 +239,6 @@ ifw_package.extra = echo \
         ^<License name=\"End User License Agreement\" file=\"LICENSE\" /^>\
     ^</Licenses^>\
     ^<Script^>script.qs^</Script^>\
-    ^<Default^>true^</Default^>\
     ^<ForcedInstallation^>true^</ForcedInstallation^>\
     ^<RequiresAdminRights^>true^</RequiresAdminRights^>\
 ^</Package^>> $${OUT_PWD}/packages/$${REV_PROJECT_DOMAIN_NAME}/meta/package.xml
@@ -252,14 +252,36 @@ ifw_script.path = $${OUT_PWD}/packages/$${REV_PROJECT_DOMAIN_NAME}/meta
 ifw_script.extra = echo \
 function Component()\
 {\
+}\
+Component.prototype.createOperations = function()\
+{\
+    component.createOperations();\
+    if (systemInfo.productType === \"windows\")\
+    {\
+        component.addOperation(\"CreateShortcut\",\
+        \"@TargetDir@/$${PROJECT_SHORT_NAME}.exe\",\
+        \"@StartMenuDir@/$${PROJECT_SHORT_NAME}.lnk\",\
+        \"workingDirectory=@TargetDir@\",\
+        \"iconPath=@TargetDir@/$${PROJECT_SHORT_NAME}.exe\");\
+        component.addOperation(\"CreateShortcut\",\
+        \"@TargetDir@/$${PROJECT_SHORT_NAME}-uninstaller.exe\",\
+        \"@StartMenuDir@/$${PROJECT_SHORT_NAME}-uninstaller.lnk\",\
+        \"workingDirectory=@TargetDir@\",\
+        \"iconPath=@TargetDir@/$${PROJECT_SHORT_NAME}-uninstaller.exe\");\
+        component.addOperation(\"CreateShortcut\",\
+        \"@TargetDir@/$${PROJECT_SHORT_NAME}.exe\",\
+        \"@DesktopDir@/$${PROJECT_SHORT_NAME}.lnk\",\
+        \"workingDirectory=@TargetDir@\",\
+        \"iconPath=@TargetDir@/$${PROJECT_SHORT_NAME}.exe\");\
+    }\
 }> $${OUT_PWD}/packages/$${REV_PROJECT_DOMAIN_NAME}/meta/script.qs
 INSTALLS += ifw_script
 
 # release step 3:
 
-win32|win64: { INSTALLER_NAME = $${OUT_PWD}/$${PROJECT_SHORT_NAME}.exe
-} else:macx: { INSTALLER_NAME = $${OUT_PWD}/$${PROJECT_SHORT_NAME}.app
-} else: { INSTALLER_NAME = $${OUT_PWD}/$${PROJECT_SHORT_NAME}.run }
+win32|win64: { INSTALLER_NAME = $${OUT_PWD}/$${PROJECT_SHORT_NAME}-installer.exe
+} else:macx: { INSTALLER_NAME = $${OUT_PWD}/$${PROJECT_SHORT_NAME}-installer.app
+} else: { INSTALLER_NAME = $${OUT_PWD}/$${PROJECT_SHORT_NAME}-installer.run }
 
 ifw_binarycreator.path = $${OUT_PWD}
 ifw_binarycreator.extra = binarycreator --offline-only --verbose \

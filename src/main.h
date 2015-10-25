@@ -13,7 +13,7 @@
 #include "il.h"
 #include "serialescape.h"
 
-#define ICON_PATH ":/media/icons/omniacreator-icon/omniacreator.png"
-#define SPLASH_PATH ":/media/splash/omniacreator-splash/splash-small.png"
+#define ICON_PATH ":/" PROJECT_SHORT_NAME_STR ".png"
+#define SPLASH_PATH ":/splash-small.png"
 
 #endif // MAIN_H

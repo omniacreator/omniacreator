@@ -37,7 +37,7 @@ def getPFXPass():
 PFXPass = getPFXPass()
 
 def getIdentity():
-    file = os.path.join(os.path.expanduser('~'), "certificate.txt")
+    file = os.path.join(os.path.expanduser('~'), "identity.txt")
     if not os.path.isfile(file): return None
     with open(file, 'r') as file: return file.readline().strip()
 identity = getIdentity()
