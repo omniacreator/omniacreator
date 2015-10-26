@@ -170,12 +170,16 @@ SOURCES += $${PWD}/qcustomplot/qcustomplot.cpp
 
 win32: DEPENDPATH += $${PWD}/fftw3/windows/32
 win64: DEPENDPATH += $${PWD}/fftw3/windows/64
+macx: DEPENDPATH += $$PWD/fftw3/mac
 win32: INCLUDEPATH += $${PWD}/fftw3/windows/32
 win64: INCLUDEPATH += $${PWD}/fftw3/windows/64
+macx: INCLUDEPATH += $$PWD/fftw3/mac
 win32: HEADERS += $${PWD}/fftw3/windows/32/fftw3.h
 win64: HEADERS += $${PWD}/fftw3/windows/64/fftw3.h
+macx: HEADERS += $${PWD}/fftw3/mac/fftw3.h
 win32: LIBS += -L$${PWD}/fftw3/windows/32 -llibfftw3-3
 win64: LIBS += -L$${PWD}/fftw3/windows/64 -llibfftw3-3
+macx: LIBS += -L$$PWD/fftw3/mac/ -lfftw3.3
 
 ###############################################################################
 # Make Install ################################################################

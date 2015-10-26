@@ -1,0 +1,15 @@
+This .zip archive contains DYLIB libraries and the associated header (.h)
+and module-definition (.la) files of FFTW compiled for Mac.  It
+also contains the corresponding bench test/benchmark programs
+and wisdom utilities.
+
+There are three libraries: single precision (float), double precision,
+and extended precision (long double).  To use the third library,
+your compiler must have sizeof(long double) == 12.
+
+The single- and double-precision libraries use SSE and SSE2, respectively,
+but should also work on older processors (the library checks at runtime
+to see whether SSE/SSE2 is supported and disables the relevant code if not).
+
+They were compiled by the GNU C compiler for MinGW, specifically:
+Apple LLVM version 7.0.0 (clang-700.0.72)
