@@ -1407,7 +1407,7 @@ void SerialEscape::readLayer0(const QByteArray &bytes)
 
             case L0_WAIT_FOR_CHECKSUM_1:
             {
-                union { quint16 q; char c[sizeof(q)]; } u;
+                union { quint16 q; char c[sizeof(quint16)]; } u;
 
                 u.c[0] = m_L0Checksum;
                 u.c[1] = bytes.at(i);
@@ -1481,7 +1481,7 @@ void SerialEscape::readLayer1(const QByteArray &bytes)
 
             case L1_WAIT_FOR_PACKET_FUNCTION_1:
             {
-                union { quint16 q; char c[sizeof(q)]; } u;
+                union { quint16 q; char c[sizeof(quint16)]; } u;
 
                 u.c[0] = m_L1Function;
                 u.c[1] = bytes.at(i);
@@ -1504,7 +1504,7 @@ void SerialEscape::readLayer1(const QByteArray &bytes)
 
             case L1_WAIT_FOR_PACKET_SIZE_1:
             {
-                union { quint16 q; char c[sizeof(q)]; } u;
+                union { quint16 q; char c[sizeof(quint16)]; } u;
 
                 u.c[0] = m_L1Size;
                 u.c[1] = bytes.at(i);

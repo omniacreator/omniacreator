@@ -300,6 +300,13 @@ int main(int argc, char *argv[])
 
     QApplication::setWindowIcon(QIcon(QStringLiteral(ICON_PATH)));
     QSplashScreen splash(QPixmap(QStringLiteral(SPLASH_PATH)));
+#ifdef Q_OS_MAC
+    splash.setWindowFlags(Qt::Dialog |
+    Qt::MSWindowsFixedSizeDialogHint |
+    Qt::WindowTitleHint |
+    Qt::WindowSystemMenuHint |
+    Qt::WindowCloseButtonHint);
+#endif
     splash.show();
 
     QSettings settings;

@@ -66,6 +66,8 @@ OC_COMMANDS = echo \
         ^<file alias=\"Serial Terminal Demo.spin\"^>$${PWD}/interfacelibrary/examples/Serial Terminal Demo.spin^</file^>\
     ^</qresource^>\
 ^</RCC^>> $${OC_TARGET}
+macx: OC_COMMANDS = $$replace(OC_COMMANDS, "\^", "\\")
+macx: OC_COMMANDS = $$replace(OC_COMMANDS, "\"", "\\\"")
 
 oc.commands = $${OC_COMMANDS}
 oc.depends = $${PWD}/$${PROJECT_SHORT_NAME}.pro
@@ -228,6 +230,8 @@ ifw_config.extra = echo \
     ^<TargetDir^>@ApplicationsDir@/$$replace(PROJECT_FULL_NAME, "_", " ")^</TargetDir^>\
     ^<MaintenanceToolName^>$${PROJECT_SHORT_NAME}-uninstaller^</MaintenanceToolName^>\
 ^</Installer^>> $${OUT_PWD}/config/config.xml
+macx: ifw_config.extra = $$replace(ifw_config.extra, "\^", "\\")
+macx: ifw_config.extra = $$replace(ifw_config.extra, "\"", "\\\"")
 INSTALLS += ifw_config
 
 ifw_package.path = $${OUT_PWD}/packages/$${REV_PROJECT_DOMAIN_NAME}/meta
@@ -246,6 +250,8 @@ ifw_package.extra = echo \
     ^<ForcedInstallation^>true^</ForcedInstallation^>\
     ^<RequiresAdminRights^>true^</RequiresAdminRights^>\
 ^</Package^>> $${OUT_PWD}/packages/$${REV_PROJECT_DOMAIN_NAME}/meta/package.xml
+macx: ifw_package.extra = $$replace(ifw_package.extra, "\^", "\\")
+macx: ifw_package.extra = $$replace(ifw_package.extra, "\"", "\\\"")
 INSTALLS += ifw_package
 
 ifw_license.path = $${OUT_PWD}/packages/$${REV_PROJECT_DOMAIN_NAME}/meta
@@ -279,6 +285,8 @@ Component.prototype.createOperations = function()\
         \"iconPath=@TargetDir@/$${PROJECT_SHORT_NAME}.exe\");\
     }\
 }> $${OUT_PWD}/packages/$${REV_PROJECT_DOMAIN_NAME}/meta/script.qs
+macx: ifw_script.extra = $$replace(ifw_script.extra, "\^", "\\")
+macx: ifw_script.extra = $$replace(ifw_script.extra, "\"", "\\\"")
 INSTALLS += ifw_script
 
 # release step 3:
